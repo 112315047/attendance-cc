@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Face Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand"><b>FaceApp Admin</b></div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Scanner</a>
+            <a href="/dashboard" class="nav-link active">Dashboard</a>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">🌓</button>
+    </nav>
+
+    <div class="dashboard-wrapper">
+        <div class="stats-row">
+            <div class="stat-box">
+                <h3>Total Students</h3>
+                <div class="number" id="total-students">0</div>
+            </div>
+            <div class="stat-box">
+                <h3>Present Today</h3>
+                <div class="number" id="present-today">0</div>
+            </div>
+            <div class="stat-box">
+                <h3>Absent Today</h3>
+                <div class="number" id="absent-today">0</div>
+            </div>
+        </div>
+
+        <div class="charts-row">
+            <div class="chart-container"><canvas id="barChart"></canvas></div>
+            <div class="chart-container"><canvas id="pieChart"></canvas></div>
+        </div>
+
+        <div class="controls-row">
+            <div style="display: flex; gap: 15px;">
+                <input type="text" id="searchInput" placeholder="Search Name or Roll..." oninput="filterData(); renderUserTable();" style="width: 250px;">
+                <input type="date" id="dateFilter" onchange="filterData()" style="width: 150px;">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-danger" onclick="resetAttendance()">🗑️ Reset All Attendance</button>
+                <button class="btn btn-primary" onclick="fetchData()">🔄 Refresh</button>
+                <button class="btn btn-secondary" onclick="exportCSV()">📥 Export CSV</button>
+            </div>
+        </div>
+
+        <!-- Student Database Table -->
+        <h2>Student Database & Actions</h2>
+        <div class="table-container">
+            <table id="userTable">
+                <thead><tr><th>Roll Number</th><th>Name</th><th>Admin Actions</th></tr></thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Attendance Table -->
+        <h2>Live Attendance Logs</h2>
+        <div class="table-container">
+            <table id="attendanceTable">
+                <thead><tr><th>Roll Number</th><th>Name</th><th>Date</th><th>Time</th><th>Status</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">History</h2>
+            <div id="modalBody" style="margin-top: 20px; max-height: 400px; overflow-y: auto;">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

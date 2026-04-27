@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner | Face Attendance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand"><b>FaceApp</b></div>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">Scanner</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+        </div>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="clock" id="clock">00:00:00</div>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">🌓</button>
+        </div>
+    </nav>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <div class="container-center">
+        <div class="main-layout">
+            
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h1 style="margin: 0;">AI Scanner</h1>
+                    <div class="auto-scan-toggle">
+                        <label class="switch">
+                            <input type="checkbox" id="autoScanToggle" onchange="toggleAutoScan()">
+                            <span class="slider round"></span>
+                        </label>
+                        <span style="font-size: 14px; font-weight: 600;">Auto-Attendance</span>
+                    </div>
+                </div>
+                
+                <div class="camera-container" style="position: relative;">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="overlayCanvas" class="overlay-canvas"></canvas>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    <div class="spinner-overlay" id="spinner"><div class="spinner"></div></div>
+                </div>
+
+                <div class="inputs">
+                    <input type="text" id="name" placeholder="Name (Registration only)">
+                    <input type="text" id="roll" placeholder="Roll No. (Registration only)">
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-tertiary" id="btn-att" onclick="action('attendance')">Mark Attendance</button>
+                    <button class="btn btn-secondary" onclick="action('login')">Verify Face</button>
+                    <button class="btn btn-primary" onclick="action('register')">Register New Face</button>
+                </div>
+            </div>
+
+            <div class="side-panels">
+                <div class="glass-card status-panel">
+                    <h1>Live Status</h1>
+                    <div class="status-card">
+                        <h3>Last Detected</h3>
+                        <div class="status-value" id="last-name">None</div>
+                    </div>
+                    <div class="status-card">
+                        <h3>Confidence Match</h3>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="conf-bar" style="width: 0%; background: #e74c3c;"></div>
+                        </div>
+                        <div class="status-value" id="last-conf" style="font-size: 16px; margin-top: 5px;">0%</div>
+                    </div>
+                    <div class="status-card">
+                        <h3>Action Status</h3>
+                        <div class="status-value" id="last-status" style="color: #3498db;">Idle</div>
+                    </div>
+                </div>
+
+                <div class="glass-card log-panel">
+                    <h3>Activity Log</h3>
+                    <div class="log-container" id="logContainer">
+                        <div class="log-item system">System Started</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
